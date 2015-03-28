@@ -1,0 +1,14 @@
+name: Elf
+version: 1.0
+main: me.Ben.elf.Main
+author: Ben
+description: Elf class plugin for TeamBlaze.
+ 
+commands:
+     elf:
+         usage: /<command>
+         description: Gives you the Elf class!
+         
+     elfconfirm:
+         usage: /<command>
+         description: Confirms the Elf race.
