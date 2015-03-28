@@ -1,0 +1,132 @@
+package me.Ben.quests;
+
+import java.util.ArrayList;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
+import org.bukkit.entity.Villager.Profession;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.java.JavaPlugin;
+
+public class Main extends JavaPlugin implements Listener {
+	
+	ArrayList<Player> Quest1 = new ArrayList<Player>();
+	
+	public void onEnable() {
+		getServer().getPluginManager().registerEvents(this, this);
+	}
+	
+	public void onDisable() {
+	
+		
+	}
+	
+	private void Quest1(Location loc) {
+		Villager v = (Villager) loc.getWorld().spawn(loc, Villager.class);
+		v.setCustomName(ChatColor.YELLOW + "[Farmer John]");
+		v.setCustomNameVisible(true);
+		v.setProfession(Profession.FARMER);
+		
+	}
+	
+	@EventHandler
+    public void onRightClick(PlayerInteractEntityEvent event) {
+      Player player = event.getPlayer();
+   	  Entity entity = event.getRightClicked();
+		PlayerInventory inventory = player.getInventory();
+		
+		ItemStack Milk = new ItemStack(Material.MILK_BUCKET, 1);
+        ItemMeta itemmeta = Milk.getItemMeta();
+        Milk.setItemMeta(itemmeta);
+        
+		ItemStack Iron = new ItemStack(Material.IRON_INGOT, 16);
+        Iron.setItemMeta(itemmeta);
+		
+          if (event.getRightClicked().getType()==EntityType.VILLAGER) {
+              if (entity.getCustomName().equalsIgnoreCase(ChatColor.YELLOW + "[Farmer John]")) {
+            	  event.setCancelled(true);
+            	  
+               	if (!(Quest1.contains(player))) {
+        			player.sendMessage(ChatColor.GOLD + "[Farmer John]: " + ChatColor.YELLOW + "Hello Adventurer!");
+        			player.sendMessage(ChatColor.GOLD + "[Farmer John]: " + ChatColor.YELLOW + "I need you to fetch me a bucket of Milk.");
+        			player.sendMessage(ChatColor.GOLD + "[Farmer John]: " + ChatColor.YELLOW + "If you do, I will grant you 16 iron in return.");
+        			player.sendMessage(ChatColor.RED + "[Objective]: " + ChatColor.GRAY + "Fill 1 bucket with milk.");
+        			player.sendMessage(ChatColor.BLUE + "[Reward]: " + ChatColor.GRAY + "16x Iron Ingots.");
+        	    	player.playSound(player.getLocation(), Sound.VILLAGER_HAGGLE, 10, 1);
+        	    	player.playSound(player.getLocation(), Sound.ANVIL_USE, 10, 1);
+        			Quest1.add(player);
+                  }
+               	
+           	 if (Quest1.contains(player)) {
+          	   if (inventory.contains(Milk)) {
+        		    	player.sendMessage(ChatColor.GOLD + "[Farmer John]: " + ChatColor.YELLOW + "Fantastic!");
+        		    	
+        				player.sendMessage(ChatColor.GOLD + "[Farmer John]: " + ChatColor.YELLOW + "That's helped me a lot! Enjoy your reward.");
+        				player.sendMessage(ChatColor.LIGHT_PURPLE + "[Quest Complete]: " + ChatColor.BLUE + "+16 Iron Ingots " + ChatColor.WHITE + "|| " + ChatColor.BLUE + "+25 XP");
+        				inventory.removeItem(Milk);
+        				inventory.addItem(Iron);
+        				Quest1.remove(player);
+        		    	player.playSound(player.getLocation(), Sound.VILLAGER_YES, 10, 1);
+        		    	player.playSound(player.getLocation(), Sound.NOTE_PIANO, 10, 1);	
+          	   }else{
+          		    player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Oops!" + ChatColor.GRAY + " It seems you haven't completed the objective yet!");
+        		    	player.playSound(player.getLocation(), Sound.VILLAGER_NO, 10, 1);
+        		    	player.playSound(player.getLocation(), Sound.NOTE_BASS, 10, 1);
+        		    	
+         		    	
+         		    }
+        		    
+    			}
+      		    }
+      }
+  }
+	
+	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String args[]) {
+		
+		ItemStack Bucket = new ItemStack(Material.BUCKET, 1);
+        ItemMeta itemmeta = Bucket.getItemMeta();
+        Bucket.setItemMeta(itemmeta);
+		
+		ItemStack Milk = new ItemStack(Material.MILK_BUCKET, 1);
+        Milk.setItemMeta(itemmeta);
+        
+		ItemStack Iron = new ItemStack(Material.IRON_INGOT, 16);
+        Iron.setItemMeta(itemmeta);
+        
+		Player player = (Player) sender;
+		
+		if (cmd.getName().equalsIgnoreCase("quest1")) {
+			
+			
+		}
+		
+	if (cmd.getName().equalsIgnoreCase("quest1complete")) {
+
+			
+		}
+	
+        if (cmd.getName().equalsIgnoreCase("quest1npc")) {
+    	
+		Location loc = player.getLocation();
+		Quest1(loc);
+    	return true;
+    	
+         }
+		
+		return false;
+	}
+	
+}
