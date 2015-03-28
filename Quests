@@ -100,7 +100,7 @@ public class Main extends JavaPlugin implements Listener {
         ItemMeta itemmeta = Bucket.getItemMeta();
         Bucket.setItemMeta(itemmeta);
 		
-		ItemStack Milk = new ItemStack(Material.MILK_BUCKET, 1);
+		ItemStack Milk = new ItemStack(Material.MILK_BUCKET, 11); 
         Milk.setItemMeta(itemmeta);
         
 		ItemStack Iron = new ItemStack(Material.IRON_INGOT, 16);
