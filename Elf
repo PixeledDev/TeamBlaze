@@ -1,0 +1,489 @@
+package me.Ben.elf;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.Effect;
+import org.bukkit.FireworkEffect;
+import org.bukkit.FireworkEffect.Type;
+import org.bukkit.GameMode;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Firework;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+public class Main extends JavaPlugin implements Listener {
+	
+	public void onEnable() {
+		getServer().getPluginManager().registerEvents(this, this);
+	}
+	
+	public void onDisable() {
+		
+	}
+	
+    ArrayList<Player> cooldown = new ArrayList<Player>();
+    ArrayList<Player> cooldown2 = new ArrayList<Player>();
+    ArrayList<Player> cooldown3 = new ArrayList<Player>();
+    public HashMap<Player , ItemStack[]> items = new HashMap<Player , ItemStack[]>();
+    
+    @EventHandler 
+    public void onPlayerJoin(PlayerJoinEvent event){
+    	
+        Player player = event.getPlayer();
+    	PlayerInventory inventory = player.getInventory();
+    	
+		player.setGameMode(GameMode.ADVENTURE);
+    	
+    	ItemStack speed = new ItemStack(Material.STICK, 1);
+        ItemMeta itemmeta = speed.getItemMeta();
+        itemmeta.setDisplayName(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "SPEED " + ChatColor.GRAY + "(Right-Click)");
+        speed.setItemMeta(itemmeta);
+		
+		ItemStack leap = new ItemStack(Material.STICK, 1);
+        itemmeta.setDisplayName(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "LEAP " + ChatColor.GRAY + "(Right-Click)");
+        leap.setItemMeta(itemmeta);
+        
+		ItemStack purify = new ItemStack(Material.STICK, 1);
+        itemmeta.setDisplayName(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "PURIFY " + ChatColor.GRAY + "(Right-Click)");
+        purify.setItemMeta(itemmeta);
+        
+        ItemStack rage = new ItemStack(Material.STICK, 1);
+        itemmeta.setDisplayName(ChatColor.DARK_RED + "" + ChatColor.BOLD + "RAGE " + ChatColor.GRAY + "(Right-Click)");
+        rage.setItemMeta(itemmeta);
+			
+        ItemStack crush = new ItemStack(Material.STICK, 1);
+        itemmeta.setDisplayName(ChatColor.DARK_RED + "" + ChatColor.BOLD + "CRUSH " + ChatColor.GRAY + "(Right-Click)");
+        crush.setItemMeta(itemmeta);
+        
+        ItemStack invis = new ItemStack(Material.STICK, 1);
+        itemmeta.setDisplayName(ChatColor.AQUA + "" + ChatColor.BOLD + "CLOAK " + ChatColor.GRAY + "(Right-Click)");
+        invis.setItemMeta(itemmeta);
+		
+		ItemStack fly = new ItemStack(Material.STICK, 1);
+        itemmeta.setDisplayName(ChatColor.AQUA + "" + ChatColor.BOLD + "fly " + ChatColor.GRAY + "(Right-Click)");
+        fly.setItemMeta(itemmeta);
+        
+        
+		if (inventory.contains(speed) || (inventory.contains(leap) || (inventory.contains(purify) || inventory.contains(rage) || inventory.contains(crush) || inventory.contains(invis) || inventory.contains(fly)))) {
+		}
+			else if (!inventory.contains(speed) || (inventory.contains(leap) || (inventory.contains(purify) || inventory.contains(rage) || inventory.contains(crush) || inventory.contains(invis) || inventory.contains(fly)))) {
+				player.sendMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Welcome!" + ChatColor.LIGHT_PURPLE + " Please choose a race:");
+				player.sendMessage(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Elf:" + ChatColor.GRAY + " Use /elf!");
+				player.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "Orc:" + ChatColor.GRAY + " Use /orc!");
+				player.sendMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "Human:" + ChatColor.GRAY + " Use /human!");
+		}
+		
+    }
+ 
+    
+    @EventHandler()
+    public void onRespawn(PlayerRespawnEvent event){
+    	
+    	ItemStack speed = new ItemStack(Material.GLOWSTONE_DUST, 1);
+        ItemMeta itemmeta = speed.getItemMeta();
+        itemmeta.setDisplayName(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "SPEED " + ChatColor.GRAY + "(Right-Click)");
+        speed.setItemMeta(itemmeta);
+		
+		ItemStack leap = new ItemStack(Material.SULPHUR, 1);
+        itemmeta.setDisplayName(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "LEAP " + ChatColor.GRAY + "(Right-Click)");
+        leap.setItemMeta(itemmeta);
+        
+		ItemStack purify = new ItemStack(Material.NETHER_STAR, 1);
+        itemmeta.setDisplayName(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "PURIFY " + ChatColor.GRAY + "(Right-Click)");
+        purify.setItemMeta(itemmeta);
+        
+        //<--- LORE BOOK --->
+		//ItemStack lore = new ItemStack(Material.BOOK, 1);
+        //itemmeta.setDisplayName(ChatColor.YELLOW + "" + ChatColor.BOLD + "LORE BOOK " + ChatColor.WHITE + "(Right-Click)");
+        //lore.setItemMeta(itemmeta);
+        
+        //<--- ARROWS --->
+		//ItemStack arrows = new ItemStack(Material.ARROW, 1);
+        //itemmeta.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "ELVISH ARROWS " + ChatColor.WHITE + "(Lvl. 1)");
+        //arrows.setItemMeta(itemmeta);
+        
+		ItemStack food = new ItemStack(Material.COOKED_MUTTON, 15);
+		itemmeta.setDisplayName(ChatColor.WHITE + "Cooked Mutton");
+        food.setItemMeta(itemmeta);
+        
+		ItemStack manapot = new ItemStack(Material.GLASS_BOTTLE);
+        itemmeta.setDisplayName(ChatColor.BLUE + "" + ChatColor.BOLD + "MANA POTION " + ChatColor.GRAY + "(Right-Click)");
+        manapot.setItemMeta(itemmeta);
+  	    
+        if(items.containsKey(event.getPlayer())){
+            event.getPlayer().getInventory().clear();
+            for(ItemStack stack : items.get(event.getPlayer())){
+                if(stack != null){
+                    event.getPlayer().getInventory().addItem(stack);
+                	}
+                }
+            }
+ 
+            items.remove(event.getPlayer());
+        }
+        
+ 
+    @EventHandler()
+    public void onDeath(PlayerDeathEvent event){
+  	    
+    	event.getDrops().clear();
+        ItemStack[] content = event.getEntity().getInventory().getContents();
+        items.put(event.getEntity(), content);
+        event.getEntity().getInventory().clear();
+        
+		}
+
+    
+    
+	@SuppressWarnings("deprecation")
+	@EventHandler
+	public void onInteract(final PlayerInteractEvent event) {
+	    final Player player = event.getPlayer();
+	    
+	    ItemStack speed = new ItemStack(Material.STICK, 1);
+        ItemMeta itemmeta = speed.getItemMeta();
+        itemmeta.setDisplayName(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "SPEED " + ChatColor.GRAY + "(Right-Click)");
+        speed.setItemMeta(itemmeta);
+		
+		ItemStack leap = new ItemStack(Material.STICK, 1);
+        itemmeta.setDisplayName(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "LEAP " + ChatColor.GRAY + "(Right-Click)");
+        leap.setItemMeta(itemmeta);
+        
+		ItemStack purify = new ItemStack(Material.STICK, 1);
+        itemmeta.setDisplayName(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "PURIFY " + ChatColor.GRAY + "(Right-Click)");
+        purify.setItemMeta(itemmeta);
+        
+   		ItemStack manacrystal = new ItemStack(Material.PRISMARINE_SHARD);
+        itemmeta.setDisplayName(ChatColor.BLUE + "" + ChatColor.BOLD + "MANA CRYSTAL " + ChatColor.GRAY + "(Right-Click)");
+        manacrystal.setItemMeta(itemmeta);
+	    
+	    if (player.getItemInHand().equals(leap) && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
+	    	
+	    	if (player.getFoodLevel() <= 0) {
+	    		player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Oops!" + ChatColor.GRAY + " You don't have enough mana!");
+	    		return;
+	    	}
+	    	
+	    	if (cooldown.contains(player)) {
+	    		player.playEffect(player.getLocation(), Effect.CLICK1, 0);
+	    		player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Oops!" + ChatColor.GRAY + " This spell has a 10 second cooldown...");
+	    		return;
+	    	}
+	    	player.setFoodLevel(player.getFoodLevel() - 1);
+	    	player.setVelocity(player.getLocation().getDirection().multiply(2));  
+	    	player.sendMessage(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Whoosh!" + ChatColor.GRAY + " You lept into the air.");
+	    	player.playEffect(player.getLocation(), Effect.GHAST_SHOOT, 0);
+	    	player.setFallDistance(-1000);
+            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+                public void run() {
+                        Firework f = (Firework) event.getPlayer().getWorld().spawn(event.getPlayer().getLocation(), Firework.class);
+                       
+                        FireworkMeta fm = f.getFireworkMeta();
+                        fm.addEffect(FireworkEffect.builder()
+                                        .flicker(false)
+                                        .trail(false)
+                                        .with(Type.BALL)
+                                        .withColor(Color.LIME)
+                                        .build());
+                        fm.setPower(0);
+                        f.setFireworkMeta(fm);
+                        f.detonate();
+                }
+        }, (long) 0.000001);
+	    	cooldown.add(player);
+	    	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+	    		
+	    		public void run() {
+	    			cooldown.remove(player);
+	    			player.setFallDistance(0);
+	    			player.playSound(player.getLocation(), Sound.ORB_PICKUP, 10, 1);
+	    			player.sendMessage(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "LEAP" + ChatColor.GRAY + " spell is ready!");
+	    		}
+	
+	    	}, 200);
+	    	return;
+	        }
+	    
+	    else if (player.getItemInHand().equals(speed) && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
+	    	
+	    	if (player.getFoodLevel() <= 0) {
+	    		player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Oops!" + ChatColor.GRAY + " You don't have enough mana!");
+	    		return;
+	    	}
+	    	
+	    	if (cooldown2.contains(player)) {
+	    		player.playEffect(player.getLocation(), Effect.CLICK1, 0);
+	    		player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Oops!" + ChatColor.GRAY + " This spell has a 20 second cooldown...");
+	    		return;
+	    	}
+	    	player.setFoodLevel(player.getFoodLevel() - 1);
+	    	player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 3));
+	    	player.sendMessage(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Ding!" + ChatColor.GRAY + " You have a speed buff for 10 seconds.");
+	    	player.playSound(player.getLocation(), Sound.LEVEL_UP, 10, 1);
+	    	player.playEffect(player.getLocation(), Effect.MOBSPAWNER_FLAMES, 0);
+	    	 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+	                public void run() {
+	                        Firework f = (Firework) event.getPlayer().getWorld().spawn(event.getPlayer().getLocation(), Firework.class);
+	                       
+	                        FireworkMeta fm = f.getFireworkMeta();
+	                        fm.addEffect(FireworkEffect.builder()
+	                                        .flicker(false)
+	                                        .trail(false)
+	                                        .with(Type.BALL)
+	                                        .withColor(Color.YELLOW)
+	                                        .build());
+	                        fm.setPower(0);
+	                        f.setFireworkMeta(fm);
+	                        f.detonate();
+	                }
+	        }, (long) 0.000001);
+	    	cooldown2.add(player);
+	    	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+	    		
+	    		public void run() {
+	    			cooldown2.remove(player);
+	    			player.playSound(player.getLocation(), Sound.ORB_PICKUP, 10, 1);
+	    			player.sendMessage(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "SPEED" + ChatColor.GRAY + " spell is ready!");
+	    		}
+	
+	    	}, 600);
+	    	return;
+	    	
+	    }
+	    
+	       else if (player.getItemInHand().equals(purify) && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
+	    	
+		    	if (player.getFoodLevel() <= 0) {
+		    		player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Oops!" + ChatColor.GRAY + " You don't have enough mana!");
+		    		return;
+		    	}
+	    	   
+	    	   if (cooldown3.contains(player)) {
+	    		player.playEffect(player.getLocation(), Effect.CLICK1, 0);
+	    		player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Oops!" + ChatColor.GRAY + " This spell has a 2 minute cooldown...");
+	    		return;
+	    	}
+	    	player.setFoodLevel(player.getFoodLevel() - 1);
+	    	player.removePotionEffect(PotionEffectType.BLINDNESS);
+	    	player.removePotionEffect(PotionEffectType.CONFUSION);
+	    	player.removePotionEffect(PotionEffectType.SLOW);
+	    	player.removePotionEffect(PotionEffectType.POISON);
+	    	player.removePotionEffect(PotionEffectType.WEAKNESS);
+	    	player.sendMessage(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Splash!" + ChatColor.GRAY + " All de-buffs have been purified!");
+	    	player.playSound(player.getLocation(), Sound.SWIM, 10, 1);
+	    	player.playEffect(player.getLocation(), Effect.ENDER_SIGNAL, 0);
+	    	 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+	                public void run() {
+	                        Firework f = (Firework) event.getPlayer().getWorld().spawn(event.getPlayer().getLocation(), Firework.class);
+	                       
+	                        FireworkMeta fm = f.getFireworkMeta();
+	                        fm.addEffect(FireworkEffect.builder()
+	                                        .flicker(false)
+	                                        .trail(false)
+	                                        .with(Type.BALL)
+	                                        .withColor(Color.FUCHSIA)
+	                                        .build());
+	                        fm.setPower(0);
+	                        f.setFireworkMeta(fm);
+	                        f.detonate();
+	                }
+	        }, (long) 0.000001);
+	    	cooldown3.add(player);
+	    	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+	    		
+	    		public void run() {
+	    			cooldown3.remove(player);
+	    			player.playSound(player.getLocation(), Sound.ORB_PICKUP, 10, 1);
+	    			player.sendMessage(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "PURIFY" + ChatColor.GRAY + " spell is ready!");
+	    		}
+	
+	    	}, 2400);
+	    	return;
+	    	
+	       }
+	    
+        
+        if (player.getItemInHand().equals(manacrystal) && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
+	   		player.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "Slurp!" + ChatColor.GRAY + " You now have full mana!");
+	   	
+	        
+	   		     player.setFoodLevel(20);     
+	   		     player.playSound(player.getLocation(), Sound.DRINK, 10, 1);
+	             player.getInventory().removeItem(manacrystal);
+	   		
+	             }
+	    
+	   	else if (player.getItemInHand().getType() == Material.BOW && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
+	   		if (player.getFoodLevel() <= 0) {
+	    		player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Oops!" + ChatColor.GRAY + " You are too tired. Eat food to gain energy!");
+	    	    event.setCancelled(true);
+	    		return;
+	    	}      
+	   		else
+	   		player.setFoodLevel(player.getFoodLevel() - 1);
+	         }
+	}
+
+	
+	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String args[]) {
+		
+		Player player = (Player) sender;
+		
+		if (!(sender instanceof Player)) {
+			sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Error! " + ChatColor.GRAY + "You can't use this command in the console.");
+		}
+		
+		if (cmd.getName().equalsIgnoreCase("elf")) {
+			
+			ItemStack speed = new ItemStack(Material.STICK, 1);
+            ItemMeta itemmeta = speed.getItemMeta();
+            itemmeta.setDisplayName(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "SPEED " + ChatColor.GRAY + "(Right-Click)");
+            speed.setItemMeta(itemmeta);
+			
+			ItemStack leap = new ItemStack(Material.STICK, 1);
+            itemmeta.setDisplayName(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "LEAP " + ChatColor.GRAY + "(Right-Click)");
+            leap.setItemMeta(itemmeta);
+            
+			ItemStack purify = new ItemStack(Material.STICK, 1);
+            itemmeta.setDisplayName(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "PURIFY " + ChatColor.GRAY + "(Right-Click)");
+            purify.setItemMeta(itemmeta);
+            
+            ItemStack rage = new ItemStack(Material.STICK, 1);
+            itemmeta.setDisplayName(ChatColor.DARK_RED + "" + ChatColor.BOLD + "RAGE " + ChatColor.GRAY + "(Right-Click)");
+            rage.setItemMeta(itemmeta);
+    			
+            ItemStack crush = new ItemStack(Material.STICK, 1);
+            itemmeta.setDisplayName(ChatColor.DARK_RED + "" + ChatColor.BOLD + "CRUSH " + ChatColor.GRAY + "(Right-Click)");
+            crush.setItemMeta(itemmeta);
+            
+            ItemStack invis = new ItemStack(Material.STICK, 1);
+            itemmeta.setDisplayName(ChatColor.AQUA + "" + ChatColor.BOLD + "CLOAK " + ChatColor.GRAY + "(Right-Click)");
+            invis.setItemMeta(itemmeta);
+            
+            ItemStack fly = new ItemStack(Material.STICK, 1);
+            itemmeta.setDisplayName(ChatColor.AQUA + "" + ChatColor.BOLD + "FLY " + ChatColor.GRAY + "(Right-Click)");
+            fly.setItemMeta(itemmeta);
+            
+            //<--- BOW --->
+			//ItemStack bow = new ItemStack(Material.BOW, 1);
+            //itemmeta.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "ELVISH BOW " + ChatColor.WHITE + "(Lvl. 1)");
+            //bow.setItemMeta(itemmeta);
+            //bow.addEnchantment(Enchantment.ARROW_INFINITE, 1); 
+            
+            //<--- LORE BOOK --->
+			//ItemStack lore = new ItemStack(Material.BOOK, 1);
+            //itemmeta.setDisplayName(ChatColor.YELLOW + "" + ChatColor.BOLD + "LORE BOOK " + ChatColor.WHITE + "(Right-Click)");
+            //lore.setItemMeta(itemmeta);
+            
+            //<--- ARROWS --->
+			//ItemStack arrows = new ItemStack(Material.ARROW, 1);
+            //itemmeta.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "ELVISH ARROWS " + ChatColor.WHITE + "(Lvl. 1)");
+            //arrows.setItemMeta(itemmeta);
+            
+    		ItemStack food = new ItemStack(Material.COOKED_MUTTON, 15);
+    		itemmeta.setDisplayName(ChatColor.WHITE + "Cooked Mutton");
+            food.setItemMeta(itemmeta);
+            
+    		ItemStack manapot = new ItemStack(Material.GLASS_BOTTLE);
+            itemmeta.setDisplayName(ChatColor.BLUE + "" + ChatColor.BOLD + "MANA POTION " + ChatColor.GRAY + "(Right-Click)");
+            manapot.setItemMeta(itemmeta);
+            
+			PlayerInventory inventory = player.getInventory();
+			
+			if (inventory.contains(speed) || (inventory.contains(leap) || (inventory.contains(purify) || inventory.contains(crush) || inventory.contains(rage) || inventory.contains(invis) || inventory.contains(fly)))) {
+				sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Oops!" + ChatColor.GRAY + " It seems you've already chosen a race!");
+				return true;
+			}
+
+			else
+			sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Are you sure? " + ChatColor.GRAY + "You will have to pay to change race in future!");
+			sender.sendMessage(ChatColor.GRAY + "Type: " + ChatColor.YELLOW + "/elfconfirm " + ChatColor.GRAY + "to confirm your race.");
+			
+		    }
+		
+		    if (cmd.getName().equalsIgnoreCase("elfconfirm")) {
+		
+			ItemStack speed = new ItemStack(Material.STICK, 1);
+            ItemMeta itemmeta = speed.getItemMeta();
+            itemmeta.setDisplayName(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "SPEED " + ChatColor.GRAY + "(Right-Click)");
+            speed.setItemMeta(itemmeta);
+			
+			ItemStack leap = new ItemStack(Material.STICK, 1);
+            itemmeta.setDisplayName(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "LEAP " + ChatColor.GRAY + "(Right-Click)");
+            leap.setItemMeta(itemmeta);
+            
+			ItemStack purify = new ItemStack(Material.STICK, 1);
+            itemmeta.setDisplayName(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "PURIFY " + ChatColor.GRAY + "(Right-Click)");
+            purify.setItemMeta(itemmeta);
+            
+    		ItemStack food = new ItemStack(Material.COOKED_MUTTON, 15);
+    		itemmeta.setDisplayName(ChatColor.WHITE + "Cooked Mutton");
+            food.setItemMeta(itemmeta);
+            
+    		ItemStack manacrystal = new ItemStack(Material.PRISMARINE_SHARD);
+            itemmeta.setDisplayName(ChatColor.BLUE + "" + ChatColor.BOLD + "MANA CRYSTAL " + ChatColor.GRAY + "(Right-Click)");
+            manacrystal.setItemMeta(itemmeta);
+            
+            ItemStack invis = new ItemStack(Material.STICK, 1);
+            itemmeta.setDisplayName(ChatColor.AQUA + "" + ChatColor.BOLD + "CLOAK " + ChatColor.GRAY + "(Right-Click)");
+            invis.setItemMeta(itemmeta);
+            
+            ItemStack fly = new ItemStack(Material.STICK, 1);
+            itemmeta.setDisplayName(ChatColor.AQUA + "" + ChatColor.BOLD + "FLY " + ChatColor.GRAY + "(Right-Click)");
+            fly.setItemMeta(itemmeta);
+            
+            ItemStack rage = new ItemStack(Material.STICK, 1);
+            itemmeta.setDisplayName(ChatColor.DARK_RED + "" + ChatColor.BOLD + "RAGE " + ChatColor.GRAY + "(Right-Click)");
+            rage.setItemMeta(itemmeta);
+    			
+            ItemStack crush = new ItemStack(Material.STICK, 1);
+            itemmeta.setDisplayName(ChatColor.DARK_RED + "" + ChatColor.BOLD + "CRUSH " + ChatColor.GRAY + "(Right-Click)");
+            crush.setItemMeta(itemmeta);
+            
+			PlayerInventory inventory = player.getInventory();
+			if (inventory.contains(rage) || (inventory.contains(crush) || (inventory.contains(leap) || inventory.contains(speed) || inventory.contains(purify) || inventory.contains(invis) || inventory.contains(fly)))) {
+				sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Oops!" + ChatColor.GRAY + " It seems you've already chosen a race!");
+				return true;
+			}
+            
+			
+			sender.sendMessage(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Elf " + ChatColor.GRAY + "race chosen!");
+			
+			
+			player.setGameMode(GameMode.SURVIVAL);
+			player.setHealthScale(20);
+            player.getInventory().setItem(1, speed);
+            player.getInventory().setItem(0, leap);
+            player.getInventory().setItem(2, purify);
+            player.getInventory().setItem(6, manacrystal);
+            //player.getInventory().setItem(4, bow);
+            player.getInventory().setItem(7, manacrystal);
+            //<--- LORE BOOK --->
+            //player.getInventory().setItem(6, lore);
+            //player.getInventory().setItem(7, arrows);
+            player.getInventory().setItem(8, food);
+			 }
+		return true;
+	}
+	
+}
