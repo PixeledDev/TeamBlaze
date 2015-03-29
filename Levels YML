@@ -1,0 +1,5 @@
+name: Levels
+version: 1.0
+main: me.Ben.levels.Main
+author: Ben
+description: XP Level plugin for TeamBlaze.
