@@ -1,0 +1,15 @@
+@@ -0,0 +1,14 @@
+name: Orc
+version: 1.0
+main: me.Ben.orc.Main
+author: Ben
+description: Orc race plugin for TeamBlaze.
+ 
+commands:
+     orc:
+         usage: /<command>
+         description: Gives you the Orc race!
+         
+     orcconfirm:
+         usage: /<command>
+         description: Confirms the Orc race. 
