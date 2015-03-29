@@ -1,7 +1,7 @@
-@@ -0,0 +1,20 @@
 package me.Ben.levels;
 
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin implements Listener {
@@ -16,6 +16,12 @@ public class Main extends JavaPlugin implements Listener {
 		
 	}
 	
-	// onPlayerDeath event goes here ¥~¥
+	// onPlayerDeath event goes here •~•
+	
+	public void onPlayerDeath(PlayerDeathEvent e) {
+		
+		e.setDroppedExp(1);
+		
+	}
 	
 }
