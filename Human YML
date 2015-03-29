@@ -1,0 +1,15 @@
+@@ -0,0 +1,14 @@
+name: Human
+version: 1.0
+main: me.Ben.human.Main
+author: Ben
+description: Human race plugin for TeamBlaze.
+ 
+commands:
+     human:
+         usage: /<command>
+         description: Gives you the Human race!
+         
+     humanconfirm:
+         usage: /<command>
+         description: Confirms the Human race. 
